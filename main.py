@@ -1,7 +1,8 @@
 import tkinter as tk
+import time
 from tkinter import font as tkfont
 from frames.startpage import StartPage
-from frames.infopages import InfoPage, TestInfoPage, BZInfoPageA, BZInfoPageB
+from frames.infopages import InfoPage, TestInfoPage, BZInfoPageA, BZInfoPageB, TestZwischenInfo
 from frames.testpages import TestPage
 
 # Klasse welche die gesamte App steuert
@@ -29,23 +30,19 @@ class App(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
         self.frames = {}
-        for F in (StartPage, InfoPage, TestInfoPage, BZInfoPageA, BZInfoPageB):
+        for F in (StartPage, InfoPage, TestInfoPage, BZInfoPageA, BZInfoPageB, TestPage, TestZwischenInfo):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
-        frame_index=0
-        for pathRand in self.randBilder:
-            frame = TestPage(parent=container, controller=self, path=pathRand, index=frame_index)
-            page_name = "TestPage"+str(frame_index)
-            self.frames[page_name] = frame
-            frame.grid(row=0, column=0, sticky="nsew")
-            frame_index+=1
         self.show_frame("StartPage")
 
     def show_frame(self, page_name):
         '''Zeige ein Fenster anhand seines Namens an'''
         frame = self.frames[page_name]
+        # Timer auf 0 setzten
+        if(page_name=="TestPage"):
+            frame.start_time = time.time()
         frame.tkraise()
 
 if __name__ == "__main__":
