@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import font as tkfont
 from frames.startpage import StartPage
 from frames.infopages import InfoPage, TestInfoPage, BZInfoPageA, BZInfoPageB
+from frames.testpages import TestPage
 
 # Klasse welche die gesamte App steuert
 class App(tk.Tk):
@@ -10,6 +11,9 @@ class App(tk.Tk):
         # Informationen zum Test
         self.gute_Adjektive = ["Angenehm","Ansprechend","Glücklich","Nett","Hervorragend","Fröhlich","Sympathisch","Attraktiv","Frieden","Liebevoll"]
         self.schlechte_Adjektive = ["Widerlich","Unangenehm","Distanziert","Qual","Schrecklich","Scheußlich","Böse","Minderwertig","Übel","Ignorant"]
+        # Bilder Reihenfolge
+        self.randBilder = ['vegan07.png', 'tierisch01.png', 'vegan02.png', 'vegan06.png', 'vegan08.png', 'vegan05.png', 'tierisch06.png', 'vegan01.png', 'tierisch08.png', 'tierisch05.png', 'tierisch10.png', 'vegan04.png', 'tierisch04.png', 'vegan09.png', 'vegan10.png', 'tierisch02.png', 'vegan03.png', 'tierisch07.png', 'tierisch03.png', 'tierisch09.png']
+        self.testIndex = -1
         # Fenster auf Vollbild setzen
         self.attributes("-fullscreen",True)
         # Schriftarten für alle Ansichten definieren
@@ -30,6 +34,13 @@ class App(tk.Tk):
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
+        frame_index=0
+        for pathRand in self.randBilder:
+            frame = TestPage(parent=container, controller=self, path=pathRand, index=frame_index)
+            page_name = "TestPage"+str(frame_index)
+            self.frames[page_name] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
+            frame_index+=1
         self.show_frame("StartPage")
 
     def show_frame(self, page_name):
