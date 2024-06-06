@@ -84,7 +84,7 @@ class BZInfoPageB(tk.Frame):
         text = tk.Label(self,justify=tk.LEFT,text=">      Legen Sie Ihre Zeigefinger auf die Tasten \"e\" und \"i\", um schnell reagieren zu können.\n>      Zwei Hinweisfelder oben werden Ihnen zeigen, welche Wörter oder Bilder zu welcher Taste gehören.\n>      Jedes Wort oder Bild hat eine korrekte Zuordnung. Meist sind diese sehr leicht.\n>      Der Test wird kein Ergebnis rückmelden, wenn Sie zu langsam sind - bemühen Sie sich bitte, so schnell wie möglich zu reagieren.\n>      Rechnen Sie damit, dass Sie ein paar Fehler machen werden, weil Sie zu schnell reagieren. Das ist kein Problem.\n>      Um ein genaues Ergebnis zu erhalten, meiden Sie Ablenkungen und bleiben Sie konzentriert.",font=controller.normal_font,fg=controller.fg_color, bg=controller.bg_color)
         text.pack(padx=40,anchor="w")
         controller.testIndex=0
-        continue_button = tk.Button(self, text="Verstanden und Test beginnen",font=controller.normal_font, command=lambda: controller.show_frame("TestPage"))
+        continue_button = tk.Button(self, text="Verstanden und Test beginnen",font=controller.normal_font, command=lambda: controller.show_frame("TestPage0"))
         continue_button.pack(padx=40, pady=40, anchor="w")
         continue_button.config(height=1, width=30)
 
@@ -93,5 +93,11 @@ class TestZwischenInfo(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.configure(bg=controller.bg_color)
         self.controller = controller
-        titel = tk.Label(self,text="Testteil 1 abgeschlossen")
-        titel.pack()
+        titel = tk.Label(self,justify=tk.LEFT,text="Testteil 1 - Abgeschlossen!",font=controller.title_bold_font, fg=controller.fg_color, bg=controller.bg_color)
+        titel.pack(padx=40,pady=(60,40), anchor="w")
+        text = tk.Label(self,justify=tk.LEFT,text="Nun folgen Adjektive die Sie,\ngenau wie die Bilder zu zwei verschiedenen Kategorien zuordnen sollen.\nDiesmal lauten die beiden Katgorien\n\"Gutes Adjektiv\" und \"Schlechtes Adjektiv\".",font=controller.title_font, fg=controller.fg_color, bg=controller.bg_color)
+        text.pack(padx=40,pady=(0,40), anchor="w")
+        continue_button = tk.Button(self, text="Verstanden und den zweiten Teil des Tests beginnen",font=controller.normal_font, command=lambda: controller.show_frame("TestPage1"))
+        continue_button.pack(padx=40, pady=40, anchor="w")
+        continue_button.config(height=1, width=50)
+
