@@ -46,15 +46,15 @@ class TestPage(tk.Frame):
         self.controller.bind("<KeyPress-i>", self.press_key)
         return "break"
     def press_key(self, event):
-        if(self.test_index+1==20):    # Wenn alle 20 Bilder angezeigt wurden => Zwischenmeldung
-            self.controller.unbind("<KeyPress-e>")
-            self.controller.unbind("<KeyPress-i>")
-            self.controller.show_frame("TestZwischenInfo")
-        else:
-            # Überprüfen ob Eingabe richtig war, je nach gedrückter Taste
-            if(self.typ=="bilder"):
-                bild = self.controller.randBilder[self.test_index][0]
-                if((bild=='v' and event.char=='e') or (bild=='t' and event.char=='i')):
+        # Überprüfen ob Eingabe richtig war, je nach gedrückter Taste
+        if(self.typ=="bilder"):
+            bild = self.controller.randBilder[self.test_index][0]
+            if((bild=='v' and event.char=='e') or (bild=='t' and event.char=='i')):
+                if(self.test_index+1==20):    # Wenn alle 20 Bilder angezeigt wurden => Zwischenmeldung
+                    self.controller.unbind("<KeyPress-e>")
+                    self.controller.unbind("<KeyPress-i>")
+                    self.controller.show_frame("TestZwischenInfo")
+                else:
                     self.label_error.grid_forget()
                     # Wenn ja Timer stoppen, speichern, neustarten und nächstes Bild anzeigen
                     #end_time = time.time()
@@ -66,13 +66,18 @@ class TestPage(tk.Frame):
                     self.img = tk.PhotoImage(file=filepath)
                     self.picture.configure(image=self.img)
                     self.picture.image = self.img
+            else:
+                # Wenn Nein X anzeigen
+                self.label_error.grid(row=2,column=1)
+        elif(self.typ=="adjektive"):
+            # Überprüfen ob Adjektiv richtig zugeordnet wurde (links gute rechts schlechte Adjektive)
+            array_indikator = self.controller.randAdjektive[self.test_index][0]
+            if((array_indikator==0 and event.char=='e') or (array_indikator==1 and event.char=='i')):
+                if(self.test_index+1==20):    # Wenn alle 20 Bilder angezeigt wurden => Zwischenmeldung
+                    self.controller.unbind("<KeyPress-e>")
+                    self.controller.unbind("<KeyPress-i>")
+                    self.controller.show_frame("TestZwischenInfo")
                 else:
-                    # Wenn Nein X anzeigen
-                    self.label_error.grid(row=2,column=1)
-            elif(self.typ=="adjektive"):
-                # Überprüfen ob Adjektiv richtig zugeordnet wurde (links gute rechts schlechte Adjektive)
-                array_indikator = self.controller.randAdjektive[self.test_index][0]
-                if((array_indikator==0 and event.char=='e') or (array_indikator==1 and event.char=='i')):
                     self.label_error.grid_forget()
                     self.test_index+=1
                     # Adjektiv bestimmen
@@ -81,12 +86,12 @@ class TestPage(tk.Frame):
                     else:
                         text_adjektiv = self.controller.schlechte_Adjektive[self.controller.randAdjektive[self.test_index][1]]
                     self.text["text"] = text_adjektiv
-                else:
-                    # Wenn Nein X anzeigen
-                    self.label_error.grid(row=2,column=1)
+            else:
+                # Wenn Nein X anzeigen
+                self.label_error.grid(row=2,column=1)
 
-            # Verzögerung für gedrückte Tasten
-            self.controller.unbind("<KeyPress-e>")
-            self.controller.unbind("<KeyPress-i>")
-            self.controller.after(300,self.enable_keys)
+        # Verzögerung für gedrückte Tasten
+        self.controller.unbind("<KeyPress-e>")
+        self.controller.unbind("<KeyPress-i>")
+        self.controller.after(300,self.enable_keys)
             
