@@ -20,6 +20,8 @@ class App(tk.Tk):
         # Eine 1 im ersten Wert des Tupels steht für den Array mit schlechten_Adjektiven
         # Der zweite Wert im Tupel repräsentiert den Index des Adjektives im jeweiligen Array
         self.randAdjektive = [(0, 4), (0, 5), (1, 5), (0, 1), (0, 0), (1, 7), (0, 6), (1, 2), (1, 3), (0, 7), (0, 3), (1, 6), (1, 0), (0, 9), (0, 8), (1, 1), (1, 9), (1, 8), (0, 2), (1, 4)]
+        self.randAB1 = [(0, 9),'tierisch01.png', (0, 4),'vegan02.png', (0, 8), 'vegan08.png',(0, 3),'tierisch06.png', (0, 6),'tierisch08.png', (1, 4), 'tierisch10.png',(0, 2),'tierisch04.png', (1, 7),'vegan10.png', (1, 0),'vegan03.png', (1, 1),'tierisch03.png']
+        self.randAB2 = [(1, 5),'vegan07.png', (0, 7),'vegan06.png', (1, 9), 'vegan05.png', (0, 5), 'vegan01.png',(1, 2), 'tierisch05.png',(1, 3),'vegan04.png', (1, 6),'vegan09.png', (0, 1),'tierisch02.png', (1, 8),'tierisch07.png', (0, 0),'tierisch09.png']
         # Fenster auf Vollbild setzen
         self.attributes("-fullscreen",True)
         # Schriftarten für alle Ansichten definieren
@@ -35,31 +37,39 @@ class App(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
         self.frames = {}
-        index = 0
-        for F in (StartPage, InfoPage, TestInfoPage, BZInfoPageA, BZInfoPageB, TestPage, TestZwischenInfo, TestPage):
+        indexTest = 0
+        indexInfo = 0
+        for F in (StartPage, InfoPage, TestInfoPage, BZInfoPageA, BZInfoPageB, TestPage, TestZwischenInfo, TestPage, TestZwischenInfo, TestPage, TestZwischenInfo, TestPage, TestZwischenInfo):
             page_name = F.__name__
             if F == TestPage:
-                if index==0:
+                if(indexTest==0):
                     frame = F(parent=container, controller=self, typ="bilder")
-                if index==1:
+                elif(indexTest==1):
                     frame = F(parent=container, controller=self, typ="adjektive")
+                elif(indexTest==2):
+                    frame = F(parent=container, controller=self, typ="ba1")
+                elif(indexTest==3):
+                    frame = F(parent=container, controller=self, typ="ba2")
+                self.frames[page_name+str(indexTest)] = frame
+                indexTest += 1
+            elif F == TestZwischenInfo:
+                frame = F(parent=container, controller=self, typ=indexInfo)
+                self.frames[page_name+str(indexInfo)] = frame
+                indexInfo += 1
             else:
                 frame = F(parent=container, controller=self)
-            if F==TestPage:
-                self.frames[page_name+str(index)] = frame
-                index += 1
-            else:
                 self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
-        self.show_frame("StartPage")
+        self.show_frame("TestPage2")
 
     def show_frame(self, page_name):
         '''Zeige ein Fenster anhand seines Namens an'''
         frame = self.frames[page_name]
         # Timer auf 0 setzten
-        if(page_name=="TestPage0" or page_name=="TestPage1"):
+        if("TestPage" in page_name):
             frame.enable_keys()
-            #frame.start_time = time.time()
+            if("4"or"3"in page_name):
+                frame.start_time = time.time()
         frame.tkraise()
 
 if __name__ == "__main__":
