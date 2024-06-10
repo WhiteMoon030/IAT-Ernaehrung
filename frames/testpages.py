@@ -50,8 +50,8 @@ class TestPage(tk.Frame):
                     text_adjektiv = controller.schlechte_Adjektive[self.array[self.test_index][1]]
             self.textOderBild = tk.Label(self,text=text_adjektiv,font=controller.title_font, fg=controller.fg_color, bg=controller.bg_color)
             self.textOderBild.grid(row=1,column=1, padx=(0,50))
-        label_links = tk.Label(self, text=text_links,font=controller.title_font, fg=controller.fg_color, bg=controller.bg_color)
-        label_rechts = tk.Label(self, text=text_rechts,font=controller.title_font, fg=controller.fg_color, bg=controller.bg_color)
+        label_links = tk.Label(self, text=text_links,font=controller.title_bold_font, fg=controller.fg_color, bg=controller.bg_color)
+        label_rechts = tk.Label(self, text=text_rechts,font=controller.title_bold_font, fg=controller.fg_color, bg=controller.bg_color)
         label_links.grid(row=0,column=0, padx=(350,0), pady=100, sticky=tk.W)
         label_rechts.grid(row=0,column=3, padx=(0,350), pady=100, sticky=tk.E)
         # Rotes Kreuz hinzufügen
@@ -119,7 +119,8 @@ class TestPage(tk.Frame):
                             # Wenn ja Timer stoppen, speichern und neustarten
                             end_time = time.time()
                             reaktionszeit = round(end_time - self.start_time, 4)
-                            print(reaktionszeit)
+                            # In die CSV Datei schreiben
+                            self.controller.datei.write("BA1;"+str(reaktionszeit)+"\n")
                             self.start_time = time.time()
                             self.test_index+=1
                             # Nächstes Adjektiv anzeigen
@@ -139,13 +140,13 @@ class TestPage(tk.Frame):
                         if(self.test_index+1==20):    # Wenn alle 20 Bilder angezeigt wurden => Zwischenmeldung
                             self.controller.unbind("<KeyPress-e>")
                             self.controller.unbind("<KeyPress-i>")
-                            self.controller.show_frame("TestZwischenInfo2")
+                            self.controller.show_frame("EndPage")
                         else:
                             self.label_error.grid_forget()
                             # Wenn ja Timer stoppen, speichern und neustarten
                             end_time = time.time()
                             reaktionszeit = round(end_time - self.start_time, 4)
-                            print(reaktionszeit)
+                            self.controller.datei.write("BA2;"+str(reaktionszeit)+"\n")
                             self.start_time = time.time()
                             self.test_index+=1
                             # Nächstes Adjektiv anzeigen
@@ -167,13 +168,16 @@ class TestPage(tk.Frame):
                     if(self.test_index+1==20):    # Wenn alle 20 Bilder angezeigt wurden => Zwischenmeldung
                         self.controller.unbind("<KeyPress-e>")
                         self.controller.unbind("<KeyPress-i>")
-                        self.controller.show_frame("TestZwischenInfo3")
+                        self.controller.show_frame("EndPage")
                     else:
                         self.label_error.grid_forget()
                         # Wenn ja Timer stoppen, speichern und neustarten
                         end_time = time.time()
                         reaktionszeit = round(end_time - self.start_time, 4)
-                        print(reaktionszeit)
+                        if(self.typ=="ba1"):
+                            self.controller.datei.write("BA1;"+str(reaktionszeit)+"\n")
+                        else:
+                            self.controller.datei.write("BA2;"+str(reaktionszeit)+"\n")
                         self.start_time = time.time()
                         self.test_index+=1
                         # Nächstes Bild anzeigen

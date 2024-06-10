@@ -13,14 +13,17 @@ class StartPage(tk.Frame):
         items = []
         for i in range(1,21):
             items.append(str(i))
-        variable = tk.StringVar(self)
-        variable.set("1")
-        op = tk.OptionMenu(self,variable,*items)
+        self.variable = tk.StringVar(self)
+        self.variable.set("1")
+        op = tk.OptionMenu(self,self.variable,*items)
         op.pack(pady=20)
         op.config(font=controller.normal_font)
         menu_item = self.nametowidget(op.menuname)
         menu_item.config(font=controller.normal_font)
         # Weiter Button
-        continue_button = tk.Button(self, text="Weiter",font=controller.normal_font, command=lambda: controller.show_frame("InfoPage"))
+        continue_button = tk.Button(self, text="Weiter",font=controller.normal_font, command=self.call)
         continue_button.pack(pady=20)
         continue_button.config(height=1, width=15)
+    def call(self):
+        self.controller.datei.write("Versuchspersonnummer;"+self.variable.get()+"\n")
+        self.controller.show_frame("InfoPage")

@@ -95,9 +95,30 @@ class TestZwischenInfo(tk.Frame):
         self.controller = controller
         titel = tk.Label(self,justify=tk.LEFT,text="Testteil "+str(typ+1)+" - Abgeschlossen!",font=controller.title_bold_font, fg=controller.fg_color, bg=controller.bg_color)
         titel.pack(padx=40,pady=(60,40), anchor="w")
-        text = tk.Label(self,justify=tk.LEFT,text="Nun folgen Adjektive die Sie,\ngenau wie die Bilder zu zwei verschiedenen Kategorien zuordnen sollen.\nDiesmal lauten die beiden Katgorien\n\"Gutes Adjektiv\" und \"Schlechtes Adjektiv\".",font=controller.title_font, fg=controller.fg_color, bg=controller.bg_color)
+        if(typ==0):
+            labelText = "Nun folgen Adjektive die Sie,\ngenau wie die Bilder zu zwei verschiedenen Kategorien zuordnen sollen.\nDiesmal lauten die beiden Katgorien\n\"Gutes Adjektiv\" und \"Schlechtes Adjektiv\"."
+        elif(typ==1):
+            labelText = "Nun folgen abwechselnd Adjektive und Bilder.\nDiesmal sollen diese jeweils den Kategorien\n\"Gutes Adjektiv oder Tierisches Produkt\" und \n\"Schlechtes Adjektiv oder Veganes Produkt\"\nzugeordnet werden."
+        else:
+            labelText = "Nun folgen abwechselnd Adjektive und Bilder.\nDiesmal sollen diese jeweils den Kategorien\n\"Gutes Adjektiv oder Veganes Produkt\" und \n\"Schlechtes Adjektiv oder Tierisches Produkt\"\nzugeordnet werden."
+        text = tk.Label(self,justify=tk.LEFT,text=labelText,font=controller.title_font, fg=controller.fg_color, bg=controller.bg_color)
         text.pack(padx=40,pady=(0,40), anchor="w")
-        continue_button = tk.Button(self, text="Verstanden und den zweiten Teil des Tests beginnen",font=controller.normal_font, command=lambda: controller.show_frame("TestPage"+str(typ+1)))
+        continue_button = tk.Button(self, text="Verstanden und den nächsten Teil des Tests beginnen",font=controller.normal_font, command=lambda: controller.show_frame("TestPage"+str(typ+1)))
         continue_button.pack(padx=40, pady=40, anchor="w")
         continue_button.config(height=1, width=50)
 
+class EndPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.configure(bg=controller.bg_color)
+        self.controller = controller
+        titel = tk.Label(self,justify=tk.LEFT,text="Test erfolgreich abgeschlossen!",font=controller.title_bold_font, fg=controller.fg_color, bg=controller.bg_color)
+        titel.pack(padx=40,pady=(60,40), anchor="w")
+        text = tk.Label(self,justify=tk.LEFT,text="Vielen Dank für Ihre Teilnahme.\nSie können das Programm nun schließen.",font=controller.title_font, fg=controller.fg_color, bg=controller.bg_color)
+        text.pack(padx=40,pady=(0,40), anchor="w")
+        continue_button = tk.Button(self, text="Test Beenden",font=controller.normal_font, command=self.end)
+        continue_button.pack(padx=40, pady=40, anchor="w")
+        continue_button.config(height=1, width=30)
+    def end(self):
+        self.controller.datei.close()
+        self.controller.destroy()
